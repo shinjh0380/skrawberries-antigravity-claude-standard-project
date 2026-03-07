@@ -67,6 +67,18 @@
 | OVER-04 | `commit-convention-check` | | | | | |
 | OVER-05 | | | | `deviation-report.md` | | |
 | OVER-06 | Hard invariant (no override) | | | | | |
+| TEAM-01 | | | `/team-escalation-eval` | | | |
+| TEAM-02 | | | `/team-escalation-eval` | | | |
+| TEAM-03 | | | | | | Manual (사용자 승인) |
+| TEAM-04 | | | `/team-escalation-eval` | `execution-mode-decision.md` | | |
+| TEAM-05 | | | `/team-charter-create` | `agent-team-charter.md` | | |
+| TEAM-06 | | | `/team-charter-create` | `teammate-role-card.md` | | |
+| TEAM-07 | | | `/team-charter-create` | | `team-coordinator` | |
+| TEAM-08 | | | | | | Manual |
+| TEAM-09 | | | | `team-decline-fallback.md` | | |
+| TEAM-10 | | | | | | Advisory |
+| TEAM-11 | | | `/team-charter-create` | | `team-coordinator` | |
+| TEAM-12 | | | `/handoff-create` | | | |
 
 ## Coverage Gaps
 
@@ -83,6 +95,9 @@
 | HAND-08 | Manual | Session completion Hook 추가 가능 (향후 확장) |
 | VERIF-04 | Manual | AG 브라우저 에이전트 증거 첨부 가이드로 보완 |
 | NAME-02~05 | Manual/Advisory | CI/CD 린터로 커버 가능 (프로젝트별) |
+| TEAM-03 | Manual | `/team-escalation-eval` 결과 후 사용자 확인 단계 — 자동화 불가 (의도적) |
+| TEAM-08 | Manual | 거부는 valid한 선택 — 강제 메커니즘 없음 (의도적) |
+| TEAM-10 | Advisory | 실험적 태그 누락 검사 Hook 추가 가능 (향후 확장) |
 
 ## Hook Coverage Summary
 

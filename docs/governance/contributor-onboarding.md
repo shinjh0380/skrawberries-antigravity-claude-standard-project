@@ -52,12 +52,23 @@ Hook이 자동으로 쓰기를 차단하는 파일들입니다.
 | 세션 시작 | `/session-init` |
 | 새 태스크 | `/intake-refine` |
 | 구현 전 | `/scope-risk-pass` |
+| **실행 모드 평가** | **`/team-escalation-eval`** |
 | 핸드오프 수신 | `/handoff-review` |
 | 핸드오프 전송 | `/handoff-create` |
 | 구현 중 | `/implementation-guard` |
 | UI 피드백 처리 | `/ui-spec-normalize` |
 | 증거 수집 | `/verification-bundle` |
 | 완료 전 | `/final-walkthrough` |
+| **팀 승인 후 구성** | **`/team-charter-create`** |
+
+## 에이전트 참조
+
+| 에이전트 | 역할 |
+|---------|------|
+| `scope-keeper` | 구현 범위 검토 |
+| `evidence-auditor` | 증거 번들 검증 |
+| `repo-operator` | 저장소 운영 지원 |
+| **`team-coordinator`** | **팀 크기 최소화 및 파일 충돌 위험 검토** |
 
 ## 자주 묻는 질문
 

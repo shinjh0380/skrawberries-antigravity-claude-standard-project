@@ -57,6 +57,35 @@ AG: ui-feedback-request.md 작성 (스크린샷 포함)
 → AG: 브라우저에서 확인
 ```
 
+## Agent Team 워크플로우
+
+> [EXPERIMENTAL: agent-teams] — `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` 환경 필요
+> 자세한 내용: `docs/antigravity/agent-team-guide.md`
+
+복잡한 태스크에서 AG는 agent team을 추천할 수 있습니다.
+
+### 팀 추천 시 핸드오프 예시
+
+```
+AG: 팀 추천 메시지 제시 (agent-team-guide.md의 Approval UX 형식)
+→ 사용자: 승인/거부 선택
+→ 승인 시: execution-mode: "agent-team" + team-size 포함 핸드오프 생성
+→ 거부 시: execution-mode: "single-session" 포함 핸드오프 생성 (기존 방식)
+→ CC: /team-escalation-eval → (승인 시) /team-charter-create
+```
+
+### 팀 핸드오프 YAML 추가 필드
+
+기존 9개 필수 필드에 선택적으로 추가:
+
+```yaml
+execution-mode: "agent-team"   # 또는 "single-session" | "subagents"
+team-size: 3                   # agent-team일 때만
+charter-path: ""               # CC가 charter 생성 후 채움
+```
+
+이 필드를 생략하면 CC는 `single-session`으로 처리합니다.
+
 ## 주의사항
 
 ### Antigravity 규칙 파일 설정

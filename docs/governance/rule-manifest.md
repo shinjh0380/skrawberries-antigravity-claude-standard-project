@@ -125,6 +125,29 @@
 
 ---
 
+---
+
+## I. Team Escalation Rules
+
+> [EXPERIMENTAL: agent-teams] — `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` 환경 필요
+
+| ID | Title | Owner | Scope | Applies To | Trigger | Enforcement | Source File | Override Policy | Failure Mode |
+|----|-------|-------|-------|------------|---------|-------------|-------------|-----------------|--------------|
+| TEAM-01 | Evaluate execution mode before planning | CC | Planning | Claude Code | 새 태스크 플래닝 시작 전 | Skill: `/team-escalation-eval` | standards/11-agent-team-escalation.md | Not overridable | 모드 미결정 — 기본 single-session |
+| TEAM-02 | Prefer simplest execution mode | CC | Planning | Claude Code | 실행 모드 결정 시 | Skill: `/team-escalation-eval` (negative 1.5× 가중) | standards/11-agent-team-escalation.md | Not overridable | 복잡도 과잉 — 불필요한 팀 구성 |
+| TEAM-03 | Agent team requires user approval | Shared | Planning | Both | agent-team-possible/recommended 결정 시 | Manual (사용자 승인 게이트) | standards/11-agent-team-escalation.md | Not overridable | 미승인 팀 활성화 — 즉시 중단 |
+| TEAM-04 | Record execution mode decision | CC | Planning | Claude Code | 실행 모드 결정 직후 | Skill: `/team-escalation-eval` + Template: `execution-mode-decision.md` | standards/11-agent-team-escalation.md | Not overridable | 결정 미기록 — 감사 불가 |
+| TEAM-05 | Create team charter after approval | CC | Planning | Claude Code | 사용자 팀 승인 직후 | Skill: `/team-charter-create` + Template: `agent-team-charter.md` | standards/11-agent-team-escalation.md | Not overridable | Charter 없이 팀 시작 — 역할 혼선 |
+| TEAM-06 | Define teammate roles with role cards | CC | Planning | Claude Code | Team charter 생성 시 | Skill: `/team-charter-create` + Template: `teammate-role-card.md` | standards/11-agent-team-escalation.md | Not overridable | 역할 미정의 — 파일 충돌 위험 |
+| TEAM-07 | Minimum viable team size | CC | Planning | Claude Code | Team charter 초안 작성 시 | Skill: `/team-charter-create` + Agent: `team-coordinator` | standards/11-agent-team-escalation.md | Not overridable | 과잉 팀원 — 비용 낭비 |
+| TEAM-08 | Decline without penalty | Shared | Planning | Both | 사용자 팀 거부 시 | Manual | standards/11-agent-team-escalation.md | Not applicable | N/A — 거부는 항상 유효 |
+| TEAM-09 | Record decline with fallback plan | CC | Planning | Claude Code | 사용자 팀 거부 직후 | Template: `team-decline-fallback.md` | standards/11-agent-team-escalation.md | Not overridable | 거부 미기록 — fallback 불명확 |
+| TEAM-10 | Mark experimental status | CC | All | Claude Code | Agent team 관련 문서 생성 시 | Advisory | standards/11-agent-team-escalation.md | Project overlay: waive | 실험적 상태 누락 — 오해 위험 |
+| TEAM-11 | File overlap risk assessment | CC | Planning | Claude Code | Team charter 검토 시 | Skill: `/team-charter-create` + Agent: `team-coordinator` | standards/11-agent-team-escalation.md | Not overridable | 파일 충돌 — 팀 작업 실패 |
+| TEAM-12 | Team handoff includes charter reference | Shared | Handoff | Both | Agent team 태스크 핸드오프 생성 시 | Skill: `/handoff-create` (charter-path YAML 필드) | standards/11-agent-team-escalation.md | Not overridable | Charter 참조 누락 — 맥락 손실 |
+
+---
+
 ## Summary
 
 | Enforcement Type | 규칙 수 |
@@ -132,8 +155,8 @@
 | Hook (block) | 6 |
 | Hook (advisory) | 2 |
 | Hook (total) | **8** |
-| Skill | 22 |
-| Template | 4 |
-| Agent | 3 |
-| Manual/Advisory | 11 |
-| **Total Rules** | **48** |
+| Skill | 30 |
+| Template | 9 |
+| Agent | 4 |
+| Manual/Advisory | 14 |
+| **Total Rules** | **60** |

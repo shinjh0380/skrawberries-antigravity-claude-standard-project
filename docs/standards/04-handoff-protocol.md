@@ -7,7 +7,7 @@ Antigravity와 Claude Code 간 작업 전달 시 맥락 손실 없이 완전한 
 ## Rules
 
 1. **HAND-01**: 모든 핸드오프는 YAML frontmatter + Markdown body 형식을 사용해야 한다.
-2. **HAND-02**: YAML frontmatter는 필수 필드 9개를 모두 포함해야 한다 (스키마 참조).
+2. **HAND-02**: YAML frontmatter는 필수 필드 9개를 모두 포함해야 한다 (스키마 참조). 선택적 필드(execution-mode, team-size, charter-path) 생략 시 기본값 적용, 기존 핸드오프 파일은 그대로 유효.
 3. **HAND-03**: 핸드오프 파일은 `handoffs/` 디렉토리에 저장하고, 파일명은 `{direction}-{task-id}-{YYYYMMDD}.md` 형식을 따른다.
 4. **HAND-04**: 수신 측은 `/handoff-review` 스킬로 핸드오프를 검증한 후 작업을 시작해야 한다.
 5. **HAND-05**: 핸드오프 생성 시 `/handoff-create` 스킬을 사용해야 한다.
@@ -28,6 +28,11 @@ status: "draft" | "pending" | "received" | "completed"
 priority: "low" | "normal" | "high" | "critical"
 risk-level: "low" | "medium" | "high" | "critical"
 evidence-path: "{path}"          # 예: evidence/20250115-task-001/ 또는 ""
+
+# 선택적 필드 (생략 시 기본값 적용, 하위 호환성 보장)
+execution-mode: "single-session" | "subagents" | "agent-team"  # 기본: "single-session"
+team-size: {N}                   # execution-mode가 agent-team일 때만 사용
+charter-path: "{path}"           # agent-team charter 파일 경로, 생략 가능
 ---
 ```
 
