@@ -1,10 +1,14 @@
-# ⚡ Antigravity + Claude Code Operating Framework
+<div align="center">
 
-> Antigravity(Google의 에이전트 우선 IDE)와 Claude Code 간의 **양방향 개발 파이프라인**을 위한 재사용 가능한 운영 프레임워크
+  # ⚡ Antigravity + Claude Code Operating Framework
+
+Antigravity 와 Claude Code 간의 **양방향 개발 파이프라인**을 위한 재사용 가능한 운영 프레임워크
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-Plugin-blue)](https://claude.ai)
 [![Antigravity](https://img.shields.io/badge/Antigravity-Compatible-green)](https://antigravity.dev)
+
+</div>
 
 ---
 
@@ -161,4 +165,4 @@ cat project-overlay-guide.md
 
 ## 📄 라이선스
 
-[MIT](LICENSE)
+[MIT License](LICENSE) © 2026 shinjh0380
