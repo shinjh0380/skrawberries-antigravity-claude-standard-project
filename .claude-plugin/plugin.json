@@ -1,0 +1,9 @@
+{
+  "name": "antigravity-standard",
+  "version": "1.0.0",
+  "description": "Antigravity + Claude Code bidirectional development pipeline framework",
+  "author": "antigravity-claude-standard-project",
+  "skills": "skills/",
+  "agents": "agents/",
+  "hooks": "hooks/hooks.json"
+}

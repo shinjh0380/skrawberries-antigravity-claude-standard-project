@@ -1,0 +1,34 @@
+{
+  "hooks": [
+    {
+      "event": "PreToolUse",
+      "matcher": "Write|Edit",
+      "type": "command",
+      "command": "node ${CLAUDE_PLUGIN_ROOT}/scripts/protected-path-guard.js"
+    },
+    {
+      "event": "PreToolUse",
+      "matcher": "Bash",
+      "type": "command",
+      "command": "node ${CLAUDE_PLUGIN_ROOT}/scripts/dangerous-command-guard.js"
+    },
+    {
+      "event": "PreToolUse",
+      "matcher": "Bash",
+      "type": "command",
+      "command": "node ${CLAUDE_PLUGIN_ROOT}/scripts/commit-convention-check.js"
+    },
+    {
+      "event": "Stop",
+      "matcher": "*",
+      "type": "command",
+      "command": "node ${CLAUDE_PLUGIN_ROOT}/scripts/evidence-reminder.js"
+    },
+    {
+      "event": "SessionStart",
+      "matcher": "*",
+      "type": "command",
+      "command": "node ${CLAUDE_PLUGIN_ROOT}/scripts/session-context-loader.js"
+    }
+  ]
+}
