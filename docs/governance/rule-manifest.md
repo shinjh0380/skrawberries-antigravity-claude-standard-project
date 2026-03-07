@@ -3,101 +3,137 @@
 > 이 프레임워크의 모든 규칙을 Owner, Scope, Enforcement 메커니즘과 함께 정의합니다.
 > 이 파일은 보호된 경로입니다. 수정 시 `[override:PROTECTED-PATH]` 태그 필요.
 
+**컬럼 설명**
+
+| 컬럼 | 설명 |
+|------|------|
+| ID | 규칙 식별자 |
+| Title | 규칙 명칭 (영어) |
+| Owner | 주체 — CC(Claude Code) / AG(Antigravity) / Shared / All |
+| Scope | 적용 단계 |
+| Applies To | 대상 도구/역할 |
+| Trigger | 언제 평가되는가 |
+| Enforcement | 강제 메커니즘 |
+| Source File | 규칙 정의 표준 문서 |
+| Override Policy | 재정의 가능 여부/방법 |
+| Failure Mode | 위반 시 결과 |
+
+---
+
 ## A. Intake Rules
 
-| ID | 내용 | Owner | Enforcement | 참조 |
-|----|------|-------|-------------|------|
-| INTAKE-01 | 새 태스크는 Goal/AC/Scope 포함 필수 | Shared | Skill: `/intake-refine` | standards/01 |
-| INTAKE-02 | 시각 자료에 텍스트 설명 동반 | Shared | Skill: `/intake-refine` | standards/01 |
-| INTAKE-03 | Priority 미명시 시 `normal` 기본값 | CC | Skill: `/intake-refine` | standards/01 |
-| INTAKE-04 | 의존성 명시 의무 | Shared | Manual | standards/01 |
-| INTAKE-05 | 불완전 요청은 `/intake-refine` 전까지 구현 금지 | CC | Skill | standards/01 |
+| ID | Title | Owner | Scope | Applies To | Trigger | Enforcement | Source File | Override Policy | Failure Mode |
+|----|-------|-------|-------|------------|---------|-------------|-------------|-----------------|--------------|
+| INTAKE-01 | Require Goal/AC/Scope in new tasks | Shared | Intake | Both | New task arrives | Skill: `/intake-refine` + Template: `intake-request.md` | standards/01-intake-protocol.md | Not overridable | Task blocked until intake complete |
+| INTAKE-02 | Require text description with visual materials | Shared | Intake | Both | Visual material submitted | Skill: `/intake-refine` | standards/01-intake-protocol.md | Not overridable | Task blocked until description added |
+| INTAKE-03 | Default normal priority when unspecified | CC | Intake | Claude Code | Priority field missing | Skill: `/intake-refine` (auto-assign) | standards/01-intake-protocol.md | Project overlay: change default value | Priority auto-set to `normal` |
+| INTAKE-04 | Require dependency declaration | Shared | Intake | Both | New task created | Manual review | standards/01-intake-protocol.md | Not overridable | Risk of incorrect execution order |
+| INTAKE-05 | Block implementation without completed intake | CC | Intake | Claude Code | Implementation starts | Skill: `/intake-refine` | standards/01-intake-protocol.md | Not overridable | Implementation blocked |
+
+---
 
 ## B. Planning Rules
 
-| ID | 내용 | Owner | Enforcement | 참조 |
-|----|------|-------|-------------|------|
-| PLAN-01 | 구현 전 `/scope-risk-pass` 실행 | CC | Skill | standards/02 |
-| PLAN-02 | High+ 리스크는 계획 문서 필수 | Shared | Skill | standards/02 |
-| PLAN-03 | 계획에 단계/파일/검증 포함 | Shared | Manual | standards/02 |
-| PLAN-04 | 모호성 발견 시 `/intake-refine` 복귀 | CC | Skill | standards/02 |
-| PLAN-05 | 계획 변경은 deviation-report 작성 | CC | Template | standards/02 |
-| PLAN-06 | 계획은 핸드오프 형식 준수 | Shared | Skill | standards/02 |
+| ID | Title | Owner | Scope | Applies To | Trigger | Enforcement | Source File | Override Policy | Failure Mode |
+|----|-------|-------|-------|------------|---------|-------------|-------------|-----------------|--------------|
+| PLAN-01 | Run /scope-risk-pass before implementation | CC | Planning | Claude Code | Implementation about to start | Skill: `/scope-risk-pass` | standards/02-planning-protocol.md | Not overridable | Implementation blocked |
+| PLAN-02 | Require plan document for high+ risk | Shared | Planning | Both | Risk level assessed as high or critical | Skill: `/scope-risk-pass` + Template: `ag-high-level-plan.md` | standards/02-planning-protocol.md | Not overridable | Implementation blocked |
+| PLAN-03 | Include steps/files/verification in plan | Shared | Planning | Both | Plan document created | Manual review | standards/02-planning-protocol.md | Project overlay: add required fields | Incomplete plan — missing structure |
+| PLAN-04 | Return to /intake-refine on ambiguity | CC | Planning | Claude Code | Ambiguity detected during planning | Skill: `/intake-refine` | standards/02-planning-protocol.md | Not overridable | Return to intake phase |
+| PLAN-05 | Write deviation report for plan changes | CC | Planning | Claude Code | Plan modified after approval | Template: `deviation-report.md` | standards/02-planning-protocol.md | Not overridable | Untracked deviation |
+| PLAN-06 | Plan must comply with handoff format | Shared | Planning | Both | Plan document produced | Skill: `/handoff-create` | standards/02-planning-protocol.md | Project overlay: add YAML fields | Invalid handoff format |
+
+---
 
 ## C. Implementation Rules
 
-| ID | 내용 | Owner | Enforcement | 참조 |
-|----|------|-------|-------------|------|
-| IMPL-01 | Minimal diff 원칙 | CC | Skill: `/implementation-guard` | standards/03 |
-| IMPL-02 | 미요청 리팩터링 금지 | CC | Skill | standards/03 |
-| IMPL-03 | 범위 경계 준수 | CC | Skill + Agent: scope-keeper | standards/03 |
-| IMPL-04 | 보안 취약점 도입 금지 | CC | Skill | standards/03 |
-| IMPL-05 | 기존 패턴 보존 | CC | Advisory | standards/03 |
-| IMPL-06 | 보호된 경로 수정 금지 | CC | **Hook**: protected-path-guard | standards/03 |
-| IMPL-07 | 테스트 없는 수동 검증 증거 수집 | CC | Skill: `/verification-bundle` | standards/03 |
-| IMPL-08 | TODO/FIXME에 태스크 ID 포함 | CC | Advisory | standards/03 |
+| ID | Title | Owner | Scope | Applies To | Trigger | Enforcement | Source File | Override Policy | Failure Mode |
+|----|-------|-------|-------|------------|---------|-------------|-------------|-----------------|--------------|
+| IMPL-01 | Minimal diff principle | CC | Implementation | Claude Code | Every code change | Skill: `/implementation-guard` + Agent: `scope-keeper` | standards/03-implementation-constraints.md | Not overridable | Change rejected — scope exceeded |
+| IMPL-02 | No unrequested refactoring | CC | Implementation | Claude Code | Code change submitted | Skill: `/implementation-guard` + Agent: `scope-keeper` | standards/03-implementation-constraints.md | Not overridable | Change rejected |
+| IMPL-03 | Respect scope boundaries | CC | Implementation | Claude Code | Every code change | Skill: `/implementation-guard` + Agent: `scope-keeper` | standards/03-implementation-constraints.md | Not overridable | Out-of-scope change blocked |
+| IMPL-04 | No security vulnerabilities introduced | CC | Implementation | Claude Code | Code change submitted | Skill: `/implementation-guard` | standards/03-implementation-constraints.md | Not overridable | Security violation — change blocked |
+| IMPL-05 | Preserve existing patterns | CC | Implementation | Claude Code | Code change submitted | Advisory (scope-keeper review) | standards/03-implementation-constraints.md | Project overlay: define exceptions | Advisory warning issued |
+| IMPL-06 | No modification of protected paths | CC | Implementation | Claude Code | File write attempted on protected path | **Hook: `protected-path-guard`** (block) | standards/03-implementation-constraints.md | `[override:PROTECTED-PATH]` tag required | Write blocked immediately |
+| IMPL-07 | Collect manual verification evidence without tests | CC | Implementation | Claude Code | Task completion without automated tests | Skill: `/verification-bundle` | standards/03-implementation-constraints.md | Not overridable | Evidence missing — completion blocked |
+| IMPL-08 | Include task ID in TODO/FIXME comments | CC | Implementation | Claude Code | TODO/FIXME comment added | Advisory | standards/03-implementation-constraints.md | Project overlay: disable | Advisory warning issued |
+
+---
 
 ## D. Handoff Rules
 
-| ID | 내용 | Owner | Enforcement | 참조 |
-|----|------|-------|-------------|------|
-| HAND-01 | YAML frontmatter + MD 형식 | Shared | Skill: `/handoff-review` | standards/04 |
-| HAND-02 | YAML 9개 필드 모두 포함 | Shared | Skill | standards/04 |
-| HAND-03 | handoffs/ 디렉토리 + 파일명 컨벤션 | Shared | Manual | standards/04 |
-| HAND-04 | 수신 측 `/handoff-review` 먼저 실행 | CC | Skill | standards/04 |
-| HAND-05 | `/handoff-create` 로 생성 | CC | Skill | standards/04 |
-| HAND-06 | status 단방향 전진 | Shared | Manual | standards/04 |
-| HAND-07 | evidence-path 실존 검증 | CC | Skill | standards/04 |
-| HAND-08 | 완료 후 status 업데이트 | Shared | Manual | standards/04 |
+| ID | Title | Owner | Scope | Applies To | Trigger | Enforcement | Source File | Override Policy | Failure Mode |
+|----|-------|-------|-------|------------|---------|-------------|-------------|-----------------|--------------|
+| HAND-01 | YAML frontmatter + Markdown format | Shared | Handoff | Both | Handoff document created or received | Skill: `/handoff-review`, `/handoff-create` + Template: `handoff-*.md` | standards/04-handoff-protocol.md | Not overridable | Invalid format — handoff rejected |
+| HAND-02 | Include all 9 required YAML fields | Shared | Handoff | Both | Handoff document created | Skill: `/handoff-review` (validation) | standards/04-handoff-protocol.md | Not overridable | Validation failure — missing fields |
+| HAND-03 | Use handoffs/ directory + filename convention | Shared | Handoff | Both | Handoff file saved | Manual review | standards/04-handoff-protocol.md | Project overlay: adjust prefix pattern | Misplaced or non-standard filename |
+| HAND-04 | Run /handoff-review before acting on received handoff | CC | Handoff receive | Claude Code | Handoff received | Skill: `/handoff-review` | standards/04-handoff-protocol.md | Not overridable | Implementation without full review |
+| HAND-05 | Create handoffs with /handoff-create | CC | Handoff create | Claude Code | Handoff to be created | Skill: `/handoff-create` | standards/04-handoff-protocol.md | Not overridable | Non-standard handoff produced |
+| HAND-06 | Status transitions are one-directional | Shared | Handoff | Both | Handoff status updated | Manual review | standards/04-handoff-protocol.md | Not overridable | Invalid status regression |
+| HAND-07 | Verify evidence-path exists before accepting | CC | Handoff receive | Claude Code | Handoff received | Skill: `/handoff-review` (path check) | standards/04-handoff-protocol.md | Not overridable | Missing evidence — handoff rejected |
+| HAND-08 | Update status after task completion | Shared | Handoff | Both | Task completed | Manual review | standards/04-handoff-protocol.md | Not overridable | Stale handoff status |
+
+---
 
 ## E. Verification Rules
 
-| ID | 내용 | Owner | Enforcement | 참조 |
-|----|------|-------|-------------|------|
-| VERIF-01 | 기능/버그 수정 후 최소 1개 증거 | CC | **Hook**: evidence-reminder | standards/05 |
-| VERIF-02 | evidence/{date}-{task-id}/ 저장 | CC | Skill: `/verification-bundle` | standards/05 |
-| VERIF-03 | 테스트 결과 포함 | CC | Skill | standards/05 |
-| VERIF-04 | UI 변경 시 스크린샷 포함 | AG | Manual | standards/05 |
-| VERIF-05 | 번들 인덱스 파일 필수 | CC | Skill | standards/05 |
-| VERIF-06 | 최종 커밋 전 `/final-walkthrough` | CC | Skill | standards/05 |
-| VERIF-07 | 증거 없는 완료 주장 금지 | CC | **Hook**: evidence-reminder | standards/05 |
+| ID | Title | Owner | Scope | Applies To | Trigger | Enforcement | Source File | Override Policy | Failure Mode |
+|----|-------|-------|-------|------------|---------|-------------|-------------|-----------------|--------------|
+| VERIF-01 | At least 1 evidence artifact after feature/fix | CC | Verification | Claude Code | Feature or bug fix completed | **Hook: `evidence-reminder`** (advisory) + Skill: `/verification-bundle` | standards/05-verification-protocol.md | Not overridable | Advisory prompt issued |
+| VERIF-02 | Store evidence in evidence/{date}-{task-id}/ | CC | Verification | Claude Code | Evidence artifact created | Skill: `/verification-bundle` + Template: `verification-evidence-bundle.md` | standards/05-verification-protocol.md | Project overlay: adjust path format | Evidence in wrong location |
+| VERIF-03 | Include test results in bundle | CC | Verification | Claude Code | Verification bundle assembled | Skill: `/verification-bundle` + Agent: `evidence-auditor` | standards/05-verification-protocol.md | Not overridable | Incomplete bundle — test results missing |
+| VERIF-04 | Include screenshot for UI changes | AG | Verification | Antigravity | UI component changed | Manual | standards/05-verification-protocol.md | Project overlay: waive for non-visual | Missing screenshot — bundle incomplete |
+| VERIF-05 | Require bundle index file | CC | Verification | Claude Code | Evidence bundle created | Skill: `/verification-bundle` + Agent: `evidence-auditor` | standards/05-verification-protocol.md | Not overridable | Bundle index missing — auditor fails |
+| VERIF-06 | Run /final-walkthrough before final commit | CC | Verification | Claude Code | Final commit about to be made | Skill: `/final-walkthrough` + Template: `completion-report.md` | standards/05-verification-protocol.md | Not overridable | Walkthrough skipped — commit blocked |
+| VERIF-07 | No completion claim without evidence | CC | Verification | Claude Code | Completion claimed | **Hook: `evidence-reminder`** (advisory) | standards/05-verification-protocol.md | Not overridable | Advisory prompt issued |
+
+---
 
 ## F. Risk Rules
 
-| ID | 내용 | Owner | Enforcement | 참조 |
-|----|------|-------|-------------|------|
-| RISK-01 | 구현 전 리스크 레벨 분류 | CC | Skill: `/scope-risk-pass` | standards/06 |
-| RISK-02 | `/scope-risk-pass`로 분류 | CC | Skill | standards/06 |
-| RISK-03 | 리스크 상향 조정 가능 | Shared | Skill | standards/06 |
-| RISK-04 | Critical 리스크는 명시적 승인 | Shared | Template: risk-escalation-note | standards/06 |
+| ID | Title | Owner | Scope | Applies To | Trigger | Enforcement | Source File | Override Policy | Failure Mode |
+|----|-------|-------|-------|------------|---------|-------------|-------------|-----------------|--------------|
+| RISK-01 | Classify risk level before implementation | CC | Risk assessment | Claude Code | Implementation about to start | Skill: `/scope-risk-pass` | standards/06-risk-classification.md | Not overridable | Implementation blocked |
+| RISK-02 | Use /scope-risk-pass for classification | CC | Risk assessment | Claude Code | Risk classification needed | Skill: `/scope-risk-pass` | standards/06-risk-classification.md | Not overridable | Unclassified risk — proceed blocked |
+| RISK-03 | Risk level may be escalated upward | Shared | Risk assessment | Both | New information changes risk picture | Skill: `/scope-risk-pass` (re-run) | standards/06-risk-classification.md | Not overridable | Risk underestimated — plan invalidated |
+| RISK-04 | Critical risk requires explicit approval | Shared | Risk assessment | Both | Risk level is critical | Template: `risk-escalation-note.md` + Skill: `/scope-risk-pass` | standards/06-risk-classification.md | Not overridable | Implementation blocked without approval |
+
+---
 
 ## G. Naming Rules
 
-| ID | 내용 | Owner | Enforcement | 참조 |
-|----|------|-------|-------------|------|
-| NAME-01 | Conventional Commits 형식 | CC | **Hook**: commit-convention-check | standards/08 |
-| NAME-02 | 브랜치명 컨벤션 | Shared | Advisory | standards/08 |
-| NAME-03 | 핸드오프 파일명 컨벤션 | Shared | Manual | standards/08 |
-| NAME-04 | 증거 디렉토리명 컨벤션 | CC | Manual | standards/08 |
-| NAME-05 | 태스크 ID 컨벤션 | Shared | Manual | standards/08 |
+| ID | Title | Owner | Scope | Applies To | Trigger | Enforcement | Source File | Override Policy | Failure Mode |
+|----|-------|-------|-------|------------|---------|-------------|-------------|-----------------|--------------|
+| NAME-01 | Conventional Commits format | CC | Naming | Claude Code | Commit created | **Hook: `commit-convention-check`** (block) | standards/08-naming-conventions.md | `[override:COMMIT-FORMAT]` tag required | Commit blocked |
+| NAME-02 | Branch naming convention | Shared | Naming | Both | Branch created | Advisory | standards/08-naming-conventions.md | Project overlay: redefine pattern | Advisory warning issued |
+| NAME-03 | Handoff filename convention | Shared | Naming | Both | Handoff file saved | Manual review | standards/08-naming-conventions.md | Project overlay: adjust prefix | Non-standard filename |
+| NAME-04 | Evidence directory naming convention | CC | Naming | Claude Code | Evidence directory created | Manual review | standards/08-naming-conventions.md | Project overlay: adjust date format | Non-standard directory name |
+| NAME-05 | Task ID convention | Shared | Naming | Both | Task created | Manual review | standards/08-naming-conventions.md | Project overlay: define format | Non-standard task ID |
+
+---
 
 ## H. Override Rules
 
-| ID | 내용 | Owner | Enforcement | 참조 |
-|----|------|-------|-------------|------|
-| OVER-01 | Override는 명시적 태그 필수 | Shared | **Hook** | standards/10 |
-| OVER-02 | 보호 경로: `[override:PROTECTED-PATH]` | CC | Hook | standards/10 |
-| OVER-03 | 위험 명령: `[override:DANGEROUS-CMD]` | CC | Hook | standards/10 |
-| OVER-04 | 커밋 형식: `[override:COMMIT-FORMAT]` | CC | Hook | standards/10 |
-| OVER-05 | Override는 deviation-report 기록 | Shared | Template | standards/10 |
-| OVER-06 | Invariants는 절대 Override 불가 | All | **Hook** (hard block) | standards/10 |
+| ID | Title | Owner | Scope | Applies To | Trigger | Enforcement | Source File | Override Policy | Failure Mode |
+|----|-------|-------|-------|------------|---------|-------------|-------------|-----------------|--------------|
+| OVER-01 | Override requires explicit tag | Shared | Override | Both | Override attempted | **Hook** (tag parse — all guards) | standards/10-override-protocol.md | Not applicable | Override blocked — tag missing |
+| OVER-02 | Protected path override tag: [override:PROTECTED-PATH] | CC | Override | Claude Code | Write to protected path | **Hook: `protected-path-guard`** (block) | standards/10-override-protocol.md | Tag must be present in request | Write blocked |
+| OVER-03 | Dangerous command override tag: [override:DANGEROUS-CMD] | CC | Override | Claude Code | Dangerous command executed | **Hook: `dangerous-command-guard`** (block) | standards/10-override-protocol.md | Tag must be present in request | Command blocked |
+| OVER-04 | Commit format override tag: [override:COMMIT-FORMAT] | CC | Override | Claude Code | Non-conventional commit | **Hook: `commit-convention-check`** (block) | standards/10-override-protocol.md | Tag must be present in request | Commit blocked |
+| OVER-05 | Record override in deviation-report | Shared | Override | Both | Any override tag used | Template: `deviation-report.md` | standards/10-override-protocol.md | Not overridable | Untracked override — audit gap |
+| OVER-06 | Invariants cannot be overridden by any tier | All | Override | Both | Override attempted on invariant | **Hook** (hard block — no tag bypass) | standards/10-override-protocol.md | Absolutely not overridable | Hard block — no exceptions |
+
+---
 
 ## Summary
 
 | Enforcement Type | 규칙 수 |
 |-----------------|--------|
-| Hook (automatic) | 9 |
+| Hook (block) | 6 |
+| Hook (advisory) | 2 |
+| Hook (total) | **8** |
 | Skill | 22 |
 | Template | 4 |
-| Manual/Advisory | 13 |
-| **Total** | **48** |
+| Agent | 3 |
+| Manual/Advisory | 11 |
+| **Total Rules** | **48** |

@@ -2,6 +2,119 @@
 
 > 새 프로젝트에서 이 프레임워크를 도입하는 방법을 단계별로 설명합니다.
 
+---
+
+## 상황별 도입 경로
+
+프레임워크 도입 전, 현재 상황에 맞는 경로를 선택합니다.
+
+### Path A: Brand-New Repository Bootstrap
+
+완전히 새로운 레포를 처음부터 시작하는 경우.
+
+1. **레포 초기화**
+   ```bash
+   git init my-project && cd my-project
+   mkdir -p handoffs evidence docs
+   ```
+
+2. **플러그인 연결** (아래 "도입 방법 1" 참조)
+   ```bash
+   git clone {this-repo-url} ~/.claude/plugins/antigravity-standard
+   ```
+
+3. **CLAUDE.md 초기화**
+   ```bash
+   cp ~/.claude/plugins/antigravity-standard/CLAUDE.md ./CLAUDE.md
+   # 프로젝트명, 언어, 보호 경로 등 수정
+   ```
+
+4. **`.gitignore` 설정**
+   ```gitignore
+   handoffs/
+   evidence/
+   .claude/settings.local.json
+   ```
+
+5. **첫 세션 시작**
+   ```
+   /session-init
+   ```
+
+6. **첫 태스크 인테이크**
+   ```
+   /intake-refine
+   ```
+
+완료 기준: Hook 검증 테스트 통과 (아래 "검증" 섹션 참조)
+
+---
+
+### Path B: Existing Repository with Partial Standards
+
+이미 운영 중인 레포에 이 프레임워크를 추가하는 경우.
+
+#### Phase 0: 충돌 감사
+
+기존 설정과의 충돌을 먼저 파악합니다.
+
+| 항목 | 확인 사항 | 충돌 시 조치 |
+|------|----------|-------------|
+| `CLAUDE.md` | 기존 파일 존재 여부 | 병합 가이드(아래) 참조 |
+| `hooks/hooks.json` | 기존 Hook 설정 존재 여부 | Hook 이름 충돌 확인 |
+| `.gitignore` | `handoffs/`, `evidence/` 이미 제외 여부 | 없으면 추가 |
+| 커밋 컨벤션 | 기존 컨벤션이 Conventional Commits와 다른지 | NAME-01 Override 고려 |
+
+#### Phase 1: Hook만 먼저 도입 (최소 침습)
+
+```bash
+# 플러그인 클론
+git clone {this-repo-url} ~/.claude/plugins/antigravity-standard
+
+# hooks/hooks.json만 활성화 (protected-path, commit-check, evidence-reminder)
+# .claude/settings.json에 플러그인 추가
+```
+
+기존 워크플로를 유지하면서 Hook만 적용. 1~2주 운영 후 Phase 2로.
+
+#### Phase 2: Skills 추가
+
+Phase 1 안정화 후 스킬 도입:
+- `/intake-refine` — 태스크 시작 시
+- `/scope-risk-pass` — 구현 전
+- `/verification-bundle` — 완료 시
+
+#### Phase 3: 전체 프레임워크
+
+Handoff 프로토콜, 에이전트, 증거 번들 전체 적용.
+
+#### 기존 CLAUDE.md 병합 가이드
+
+기존 `CLAUDE.md`가 있는 경우, 다음 순서로 병합합니다:
+
+```markdown
+# {프로젝트명}
+
+## [기존 프로젝트 규칙은 여기 유지]
+(기존 내용 그대로 보존)
+
+## Standards Reference (antigravity-standard 추가)
+- docs/standards/ (플러그인 내)
+
+## Session Protocol (추가)
+- Use /session-init at session start
+```
+
+플러그인 규칙과 기존 규칙이 충돌하면 프로젝트 규칙이 우선합니다 (`project-overlay-guide.md` 참조).
+
+#### 기존 커밋 컨벤션 호환성
+
+기존 컨벤션이 Conventional Commits와 다른 경우:
+- **유사한 경우**: `commit-convention-check.js`의 정규식 수정 (`project-overlay-guide.md` 참조)
+- **완전히 다른 경우**: `[override:COMMIT-FORMAT]` 태그로 Hook 우회 후 점진적 전환
+
+---
+
 ## 전제 조건
 
 - Claude Code CLI 설치

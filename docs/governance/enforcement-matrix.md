@@ -20,29 +20,47 @@
 |---------|-----------|--------------|-------|----------|-------|--------|
 | INTAKE-01 | | | `/intake-refine` | `intake-request.md` | | |
 | INTAKE-02 | | | `/intake-refine` | | | |
+| INTAKE-03 | | | `/intake-refine` (auto-assign) | | | |
+| INTAKE-04 | | | | | | Manual |
 | INTAKE-05 | | | `/intake-refine` | | | |
 | PLAN-01 | | | `/scope-risk-pass` | | | |
 | PLAN-02 | | | `/scope-risk-pass` | `ag-high-level-plan.md` | | |
+| PLAN-03 | | | | | | Manual |
+| PLAN-04 | | | `/intake-refine` | | | |
 | PLAN-05 | | | | `deviation-report.md` | | |
+| PLAN-06 | | | `/handoff-create` | | | |
 | IMPL-01 | | | `/implementation-guard` | | `scope-keeper` | |
 | IMPL-02 | | | `/implementation-guard` | | `scope-keeper` | |
 | IMPL-03 | | | `/implementation-guard` | | `scope-keeper` | |
 | IMPL-04 | | | `/implementation-guard` | | | |
+| IMPL-05 | | | | | `scope-keeper` | Advisory |
 | IMPL-06 | `protected-path-guard` | | | | | |
+| IMPL-07 | | | `/verification-bundle` | | | |
+| IMPL-08 | | | | | | Advisory |
 | HAND-01 | | | `/handoff-review`, `/handoff-create` | `handoff-*.md` | | |
 | HAND-02 | | | `/handoff-review` | | | |
+| HAND-03 | | | | | | Manual |
 | HAND-04 | | | `/handoff-review` | | | |
 | HAND-05 | | | `/handoff-create` | | | |
+| HAND-06 | | | | | | Manual |
+| HAND-07 | | | `/handoff-review` | | | |
+| HAND-08 | | | | | | Manual |
 | VERIF-01 | | `evidence-reminder` | `/verification-bundle` | | | |
 | VERIF-02 | | | `/verification-bundle` | `verification-evidence-bundle.md` | | |
 | VERIF-03 | | | `/verification-bundle` | | `evidence-auditor` | |
+| VERIF-04 | | | | | | Manual |
 | VERIF-05 | | | `/verification-bundle` | | `evidence-auditor` | |
 | VERIF-06 | | | `/final-walkthrough` | `completion-report.md` | | |
 | VERIF-07 | | `evidence-reminder` | | | | |
 | RISK-01 | | | `/scope-risk-pass` | | | |
+| RISK-02 | | | `/scope-risk-pass` | | | |
+| RISK-03 | | | `/scope-risk-pass` | | | |
 | RISK-04 | | | `/scope-risk-pass` | `risk-escalation-note.md` | | |
 | NAME-01 | `commit-convention-check` | | | | | |
-| NAME-02 | | | | | | Manual |
+| NAME-02 | | | | | | Advisory |
+| NAME-03 | | | | | | Manual |
+| NAME-04 | | | | | | Manual |
+| NAME-05 | | | | | | Manual |
 | OVER-01 | `*-guard` (tag parse) | | | | | |
 | OVER-02 | `protected-path-guard` | | | | | |
 | OVER-03 | `dangerous-command-guard` | | | | | |
@@ -54,13 +72,17 @@
 
 다음 규칙은 현재 자동 강제 메커니즘이 없습니다 (Manual/Advisory):
 
-| 규칙 ID | 강화 방법 제안 |
-|---------|--------------|
-| PLAN-06 | `/handoff-review` 실행 시 YAML 검증으로 커버 가능 |
-| IMPL-05 | 코드 리뷰 단계에서 수동 확인 |
-| HAND-06 | status 이전 이력 추적 Hook 추가 가능 (향후 확장) |
-| HAND-08 | Session completion Hook 추가 가능 (향후 확장) |
-| NAME-02~05 | CI/CD 린터로 커버 가능 (프로젝트별) |
+| 규칙 ID | 현재 방식 | 강화 방법 제안 |
+|---------|----------|--------------|
+| INTAKE-04 | Manual | 핸드오프 YAML `dependencies` 필드 검증 Hook 추가 가능 |
+| PLAN-03 | Manual | 계획 문서 구조 검증 Skill 확장 가능 |
+| IMPL-05 | Advisory | scope-keeper 에이전트 코드 리뷰 단계에서 보조 |
+| IMPL-08 | Advisory | CI/CD 린터 또는 커밋 Hook 확장 가능 |
+| HAND-03 | Manual | `/handoff-create` Skill이 파일명 자동 생성으로 커버 가능 |
+| HAND-06 | Manual | status 이전 이력 추적 Hook 추가 가능 (향후 확장) |
+| HAND-08 | Manual | Session completion Hook 추가 가능 (향후 확장) |
+| VERIF-04 | Manual | AG 브라우저 에이전트 증거 첨부 가이드로 보완 |
+| NAME-02~05 | Manual/Advisory | CI/CD 린터로 커버 가능 (프로젝트별) |
 
 ## Hook Coverage Summary
 
