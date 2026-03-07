@@ -4,7 +4,7 @@
 
 사용자 승인 후 agent team charter와 팀원 role card를 생성합니다.
 
-관련 규칙: TEAM-05, TEAM-06, TEAM-07, TEAM-11
+관련 규칙: TEAM-05, TEAM-06, TEAM-07, TEAM-11, TEAM-13, TEAM-14, TEAM-15
 
 ## Prerequisites
 
@@ -39,6 +39,25 @@
 - Handoff Expectations, Success Criteria
 
 파일명: `handoffs/role-{task-id}-teammate-{N}-{YYYYMMDD}.md`
+
+### Step 3.5: Per-Teammate Plan Approval (TEAM-15)
+
+각 팀원이 구현을 시작하기 전에 실행 계획을 승인합니다:
+
+1. 각 팀원의 role card에서 Expected Outputs와 Boundaries를 확인합니다
+2. 팀원별 `templates/task-approval-artifact.md`를 작성합니다
+3. Auto-Approval Checklist를 평가합니다:
+   - 체크리스트 **모두** 충족 → CC lead 자동 승인 (`approval-mode: auto-approved`, `approver: cc-lead`)
+   - 하나라도 미충족 → 사용자에게 계획 요약 제시 후 승인 대기 (`approval-mode: user-approved`, `approver: user`)
+4. 승인 결과를 `task-approval-artifact.md`에 기록합니다
+5. 거부(`user-rejected`) 시: 계획 수정 후 `plan-version` 증가, 재승인 진행
+
+파일명: `handoffs/approval-{task-id}-teammate-{N}-{YYYYMMDD}.md`
+
+**모델 정책 명시**: 각 role card Notes에 다음을 추가합니다:
+- Teammate 권장 모델: `sonnet` (비용 효율 우선)
+- Root/Coordinator 권장: `opusplan`
+- 네이티브 핀 미지원 — team-spawn 지시문으로만 전달 (U-011)
 
 ### Step 4: Team Coordinator Review
 

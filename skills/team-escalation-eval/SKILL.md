@@ -4,7 +4,7 @@
 
 태스크를 분석하여 최적 실행 모드(single-session / subagents / agent-team)를 결정하고 기록합니다.
 
-관련 규칙: TEAM-01, TEAM-02, TEAM-04
+관련 규칙: TEAM-01, TEAM-02, TEAM-04, TEAM-14
 
 ## When to Use
 
@@ -59,6 +59,23 @@ net_score = (F1+F2+F3+F4+F5+F6+F9+F10) - (F7+F8)×1.5
 - 4 ≤ net_score < 8 → `subagents`
 - 8 ≤ net_score < 12 → `agent-team-possible`
 - net_score ≥ 12 → `agent-team-recommended`
+
+### Step 2.5: Cost Estimation (TEAM-14)
+
+rubric 점수가 `agent-team-possible` 이상인 경우, 팀 구성 전에 비용을 추정합니다:
+
+1. **팀원 수 × 예상 토큰 배수**: 팀원 N명 → 단일 세션 대비 ~N×배 토큰 예상
+2. **브로드캐스트 필요 여부**: 진행률 보고 외 브로드캐스트가 필요한가? (금지)
+3. **재시도 위험**: 팀원 중 동일 작업을 3회 이상 재시도할 가능성이 있는가?
+4. **유휴 위험**: 팀원이 다른 팀원 완료를 기다리며 유휴 상태가 될 가능성은?
+
+**비용 추정 결과를 recommendation에 포함**:
+```
+예상 추가 비용: ~{N}x 토큰 사용 (팀원 {N}명 기준)
+비용 경고 임계값: 예상치의 150% 초과 시 사용자 알림
+```
+
+비용 위험이 높으면 (`재시도 위험 높음` + `유휴 위험 높음`) → net_score에서 2점 차감 후 재계산
 
 ### Step 3: Agent Team Path
 

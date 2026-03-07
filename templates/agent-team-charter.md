@@ -8,6 +8,10 @@ team-size: {number}
 charter-path: "handoffs/charter-{task-id}-{YYYYMMDD}.md"
 status: "active" | "completed" | "cancelled"
 experimental: true
+model-policy:
+  root: "opusplan"
+  teammate: "sonnet"
+  note: "네이티브 핀 미지원 (U-011) — team-spawn 지시문으로만 전달"
 ---
 
 # Agent Team Charter: {task-id}
@@ -46,6 +50,14 @@ experimental: true
 ## Success Criteria
 
 {완료 판단 기준 — 원래 태스크 acceptance criteria 참조}
+
+## Cost Budget (TEAM-14)
+
+- **예상 토큰 배수**: 단일 세션 대비 ~{N}× (팀원 {N}명 기준)
+- **브로드캐스트**: 금지 — 진행률 보고 및 최종 통합에만 허용
+- **재시도 한도**: 팀원당 동일 작업 최대 3회 (초과 시 CC lead에게 보고)
+- **비용 경고 임계값**: 예상치의 150% 초과 시 사용자 알림
+- **유휴 방지**: 작업 완료 팀원 즉시 종료 (TEAM-13)
 
 ## Constraints
 
