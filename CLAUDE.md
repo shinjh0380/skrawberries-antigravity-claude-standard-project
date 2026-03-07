@@ -38,6 +38,21 @@
 - Use `/implementation-guard` during implementation to enforce constraints
 - Use `/ui-spec-normalize` when processing visual/image feedback from Antigravity
 
+## Agent Team Policy
+
+- 실행 모드 선호 순서: single-session > subagents > agent-team
+- Agent team은 실험적 기능 (`CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` 필요)
+- 팀 구성 전 `/team-escalation-eval` 필수 실행
+- 모델 정책: root는 opusplan 권장, teammate는 sonnet 권장 (네이티브 핀 미지원)
+
+### Cost Discipline
+
+- 브로드캐스트 기본 금지 (진행률/통합에만 허용)
+- 완료된 팀원 즉시 종료 (유휴 팀원 = 토큰 낭비)
+- 동일 작업 재시도 3회 한도, 초과 시 사용자 승인 필요
+- spawn 프롬프트는 tight & focused 유지
+- 10명 이상 팀은 강력한 안티패턴 — 예외적 근거 없이 금지
+
 ## Protected Paths (enforced by hook — do not modify without override tag)
 
 - `.claude-plugin/**`
