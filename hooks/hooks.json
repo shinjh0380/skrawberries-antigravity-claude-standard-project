@@ -25,6 +25,12 @@
       "command": "node ${CLAUDE_PLUGIN_ROOT}/scripts/evidence-reminder.js"
     },
     {
+      "event": "Stop",
+      "matcher": "*",
+      "type": "command",
+      "command": "node ${CLAUDE_PLUGIN_ROOT}/scripts/team-stop-check.js"
+    },
+    {
       "event": "SessionStart",
       "matcher": "*",
       "type": "command",

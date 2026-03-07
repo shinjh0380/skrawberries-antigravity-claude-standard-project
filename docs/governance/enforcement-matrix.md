@@ -79,6 +79,9 @@
 | TEAM-10 | | | | | | Advisory |
 | TEAM-11 | | | `/team-charter-create` | | `team-coordinator` | |
 | TEAM-12 | | | `/handoff-create` | | | |
+| TEAM-13 | | `team-stop-check` | | | `team-coordinator` | |
+| TEAM-14 | | | | | | Advisory + CLAUDE.md |
+| TEAM-15 | | | `/team-charter-create` (Step 3.5) | `task-approval-artifact.md` | | |
 
 ## Coverage Gaps
 
@@ -98,6 +101,7 @@
 | TEAM-03 | Manual | `/team-escalation-eval` 결과 후 사용자 확인 단계 — 자동화 불가 (의도적) |
 | TEAM-08 | Manual | 거부는 valid한 선택 — 강제 메커니즘 없음 (의도적) |
 | TEAM-10 | Advisory | 실험적 태그 누락 검사 Hook 추가 가능 (향후 확장) |
+| TEAM-14 | Advisory | 브로드캐스트/재시도 자동 감지는 현재 불가 — CLAUDE.md 정책 + 운영자 준수로 커버 |
 
 ## Hook Coverage Summary
 
@@ -108,3 +112,4 @@
 | `commit-convention-check.js` | NAME-01, OVER-04 |
 | `evidence-reminder.js` | VERIF-01, VERIF-07 |
 | `session-context-loader.js` | (informational — HAND-04 보조) |
+| `team-stop-check.js` | TEAM-13 (advisory), TEAM-15 완료 후 evidence 확인 |

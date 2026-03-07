@@ -145,6 +145,9 @@
 | TEAM-10 | Mark experimental status | CC | All | Claude Code | Agent team 관련 문서 생성 시 | Advisory | standards/11-agent-team-escalation.md | Project overlay: waive | 실험적 상태 누락 — 오해 위험 |
 | TEAM-11 | File overlap risk assessment | CC | Planning | Claude Code | Team charter 검토 시 | Skill: `/team-charter-create` + Agent: `team-coordinator` | standards/11-agent-team-escalation.md | Not overridable | 파일 충돌 — 팀 작업 실패 |
 | TEAM-12 | Team handoff includes charter reference | Shared | Handoff | Both | Agent team 태스크 핸드오프 생성 시 | Skill: `/handoff-create` (charter-path YAML 필드) | standards/11-agent-team-escalation.md | Not overridable | Charter 참조 누락 — 맥락 손실 |
+| TEAM-13 | Immediate teammate teardown after completion | CC | Execution | Claude Code | 팀원의 Expected Outputs 완료 시 | Agent: `team-coordinator` + Hook: `team-stop-check` (advisory) | standards/11-agent-team-escalation.md | Not overridable | 유휴 팀원 — 토큰 낭비 지속 |
+| TEAM-14 | Cost discipline for team operations | CC | Execution | Claude Code | 팀 운영 중 지속적 | Advisory + CLAUDE.md 정책 | standards/11-agent-team-escalation.md | Not overridable | 브로드캐스트/재시도 남용 — 비용 초과 |
+| TEAM-15 | Per-teammate plan approval before implementation | CC | Planning | Claude Code | 팀원이 구현 시작 시 | Skill: `/team-charter-create` (Step 3.5) + Template: `task-approval-artifact.md` | standards/11-agent-team-escalation.md | Not overridable | 미승인 구현 — 범위 일탈 위험 |
 
 ---
 
@@ -153,10 +156,10 @@
 | Enforcement Type | 규칙 수 |
 |-----------------|--------|
 | Hook (block) | 6 |
-| Hook (advisory) | 2 |
-| Hook (total) | **8** |
-| Skill | 30 |
-| Template | 9 |
-| Agent | 4 |
+| Hook (advisory) | 3 |
+| Hook (total) | **9** |
+| Skill | 31 |
+| Template | 10 |
+| Agent | 5 |
 | Manual/Advisory | 14 |
-| **Total Rules** | **60** |
+| **Total Rules** | **63** |
